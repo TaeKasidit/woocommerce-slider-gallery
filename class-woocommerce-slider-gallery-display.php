@@ -11,15 +11,15 @@ class WooCommerce_Slider_Gallery_Display {
 
     public function display_slider() {
 
-        if ( is_singular( array( 'product' ) ) ) {
+        global $woocommerce, $post;
+
+        if ( is_product ) {
 
             remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20);
             remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 
             add_action( 'woocommerce_product_thumbnails', 'wc_slider_gallery_show', 30);
             function wc_slider_gallery_show() {
-
-                global $woocommerce, $post;
 
                 echo '<div id="slider" class="flexslider">';
                 echo '<ul class="slides">';
@@ -87,3 +87,5 @@ class WooCommerce_Slider_Gallery_Display {
     }
 
 }
+
+// TODO: Since this isn't working as a plugin. Try loading it from the functions file first. Once it's working, then convert it to a plugin.
