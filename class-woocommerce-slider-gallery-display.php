@@ -2,65 +2,87 @@
 
 class WooCommerce_Slider_Gallery_Display {
 
-  	public function display_slider( $content ) {
+    public function initialize() {
 
-        global $woocommerce, $post;
+        add_filter( 'the_content', array( $this, 'display_slider' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-        if (is_singular( array( 'product' ) )) {
+    }
+
+    public function display_slider() {
+
+        if ( is_singular( array( 'product' ) ) ) {
 
             remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20);
             remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 
-            add_action( 'woocommerce_product_thumbnails', 'wc_dynamic_gallery_show', 30);
-            function wc_dynamic_gallery_show() {
+            add_action( 'woocommerce_product_thumbnails', 'wc_slider_gallery_show', 30);
+            function wc_slider_gallery_show() {
 
-              echo '<div id="slider" class="flexslider">';
-              echo '<ul class="slides">';
+                global $woocommerce, $post;
 
-               $args = array(
-                 'post_type' => 'attachment',
-                 'numberposts' => -1,
-                 'post_status' => null,
-                 'post_parent' => $post->ID
+                echo '<div id="slider" class="flexslider">';
+                echo '<ul class="slides">';
+
+                $args = array(
+                    'post_type' => 'attachment',
+                    'numberposts' => -1,
+                    'post_status' => null,
+                    'post_parent' => $post->ID
                 );
 
                 $attachments = get_posts( $args );
-                   if ( $attachments ) {
-                      foreach ( $attachments as $attachment ) {
-                         echo '<li>';
-                         echo wp_get_attachment_image( $attachment->ID, 'full' );
-                         echo '</li>';
-                        }
-                   }
+                if ( $attachments ) {
+                    foreach ( $attachments as $attachment ) {
+                        echo '<li>';
+                        echo wp_get_attachment_image( $attachment->ID, 'full' );
+                        echo '</li>';
+                    }
+                }
 
-              echo '</ul>';
-              echo '</div>';
+                echo '</ul>';
+                echo '</div>';
 
-              echo '<div id="carousel" class="flexslider">';
-              echo '<ul class="slides">';
+                echo '<div id="carousel" class="flexslider">';
+                echo '<ul class="slides">';
 
-               $args = array(
-                 'post_type' => 'attachment',
-                 'numberposts' => -1,
-                 'post_status' => null,
-                 'post_parent' => $post->ID
+                $args = array(
+                    'post_type' => 'attachment',
+                    'numberposts' => -1,
+                    'post_status' => null,
+                    'post_parent' => $post->ID
                 );
 
                 $attachments = get_posts( $args );
-                   if ( $attachments ) {
-                      foreach ( $attachments as $attachment ) {
-                         echo '<li>';
-                         echo wp_get_attachment_image( $attachment->ID, 'full' );
-                         echo '</li>';
-                        }
-                   }
+                if ( $attachments ) {
+                    foreach ( $attachments as $attachment ) {
+                        echo '<li>';
+                        echo wp_get_attachment_image( $attachment->ID, 'full' );
+                        echo '</li>';
+                    }
+                }
 
-              echo '</ul>';
-              echo '</div>';
+                echo '</ul>';
+                echo '</div>';
 
-          }
+            }
 
         }
+
+    }
+
+    public function enqueue_scripts() {
+
+        wp_enqueue_script( 'jquery-easing', plugins_url( 'woocommerce-slider-gallery/js/jquery.easing.js' ), array( 'jquery' ), '1.3' );
+
+        wp_enqueue_script( 'jquery-flexslider', plugins_url( 'woocommerce-slider-gallery/js/jquery.flexslider.js' ), array( 'jquery' ), '2.5.0' );
+
+        wp_enqueue_script( 'jquery-mousewheel', plugins_url( 'woocommerce-slider-gallery/js/jquery.mousewheel.js' ), array( 'jquery' ), '3.0.6' );
+
+        wp_enqueue_script( 'modernizr', plugins_url( 'woocommerce-slider-gallery/js/modernizr.js' ), array( 'jquery' ), '2.0.6' );
+
+        wp_enqueue_script( 'woocommerce-slider-gallery', plugins_url( 'woocommerce-slider-gallery/js/woocommerce-slider-gallery.js' ), array( 'jquery' ), '0.0.1' );
+
 
     }
 
