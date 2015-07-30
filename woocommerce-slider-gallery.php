@@ -18,6 +18,8 @@ function woocommerce_slider_gallery_start() {
 
   $post_notice = new WooCommerce_Slider_Gallery_Display();
 
+  $post_notice->initialize();
+
 }
 
 woocommerce_slider_gallery_start();
