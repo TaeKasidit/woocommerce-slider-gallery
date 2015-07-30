@@ -12,9 +12,11 @@ class WooCommerce_Slider_Gallery_Display {
             remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 
             add_action( 'woocommerce_product_thumbnails', 'wc_dynamic_gallery_show', 30);
-          function wc_dynamic_gallery_show() {
+            function wc_dynamic_gallery_show() {
 
-              <ul> <?php
+              echo '<div id="slider" class="flexslider">';
+              echo '<ul class="slides">';
+
                $args = array(
                  'post_type' => 'attachment',
                  'numberposts' => -1,
@@ -29,8 +31,32 @@ class WooCommerce_Slider_Gallery_Display {
                          echo wp_get_attachment_image( $attachment->ID, 'full' );
                          echo '</li>';
                         }
-                   } ?>
-              </ul> <?php
+                   }
+
+              echo '</ul>';
+              echo '</div>';
+
+              echo '<div id="carousel" class="flexslider">';
+              echo '<ul class="slides">';
+
+               $args = array(
+                 'post_type' => 'attachment',
+                 'numberposts' => -1,
+                 'post_status' => null,
+                 'post_parent' => $post->ID
+                );
+
+                $attachments = get_posts( $args );
+                   if ( $attachments ) {
+                      foreach ( $attachments as $attachment ) {
+                         echo '<li>';
+                         echo wp_get_attachment_image( $attachment->ID, 'full' );
+                         echo '</li>';
+                        }
+                   }
+
+              echo '</ul>';
+              echo '</div>';
 
           }
 
