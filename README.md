@@ -1,2 +1,2 @@
 # WooCommerce Slider Gallery
-Woocommerce plugin that create image slider on product page.
+Adds a thumbnail slider (via FlexSlider) to product pages.
